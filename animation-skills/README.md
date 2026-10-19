@@ -12,18 +12,10 @@
 
 ## Установка
 
-Нужны `git` и Claude Code. На Windows нужен Git for Windows: он требуется и самому Claude Code.
-
-**macOS / Linux**, в терминале:
+Нужны `git` и Claude Code. Скрипт работает на macOS и Linux. В терминале выполните:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/justbopit/CLAUDE-CLOUD/claude/eloquent-brahmagupta-f2nq6v/animation-skills/install.sh | bash
-```
-
-**Windows**, в PowerShell:
-
-```powershell
-irm https://raw.githubusercontent.com/justbopit/CLAUDE-CLOUD/claude/eloquent-brahmagupta-f2nq6v/animation-skills/install.ps1 | iex
 ```
 
 После установки перезапустите Claude Code или откройте новую сессию. Чтобы проверить, наберите `/` в Claude Code: в списке появятся `/design-dna`, `/motion-design`, `/genjutsu:cast` и остальные. Плагины также видны в выводе `claude plugin list`.
@@ -37,8 +29,6 @@ git clone -b claude/eloquent-brahmagupta-f2nq6v https://github.com/justbopit/CLA
 less CLAUDE-CLOUD/animation-skills/install.sh
 bash CLAUDE-CLOUD/animation-skills/install.sh
 ```
-
-На Windows: `powershell -ExecutionPolicy Bypass -File CLAUDE-CLOUD\animation-skills\install.ps1`.
 
 ### Без скрипта, прямо в Claude Code
 
@@ -63,7 +53,7 @@ Three.js, Design DNA и Motion Design скрипт ставит с конкре�
 | zanwei/design-dna | `593e39b` |
 | LottieFiles/motion-design-skill | `f9a8a04` |
 
-Чтобы взять самые свежие версии, запустите `bash install.sh --latest` (Windows: `install.ps1 -Latest`). Свежие версии никто не проверял. Плагины GSAP и Genjutsu всегда ставятся с последней версии; на момент проверки это были `aed9cfd` и `1f518a7` (v4.1.1).
+Чтобы взять самые свежие версии, запустите `bash install.sh --latest`. Свежие версии никто не проверял. Плагины GSAP и Genjutsu всегда ставятся с последней версии; на момент проверки это были `aed9cfd` и `1f518a7` (v4.1.1).
 
 Что стоит знать:
 
