@@ -8,7 +8,7 @@
 | **GSAP** (официальный, от GreenSock) | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | плагин `gsap-skills@gsap-skills` (8 скиллов) | автоматически или `/gsap-skills:gsap-core` |
 | **Design DNA** | [zanwei/design-dna](https://github.com/zanwei/design-dna) | `~/.claude/skills/design-dna` | `/design-dna` + ссылка или скриншот сайта |
 | **Motion Design** (от LottieFiles) | [LottieFiles/motion-design-skill](https://github.com/LottieFiles/motion-design-skill) | `~/.claude/skills/motion-design` | автоматически или `/motion-design` |
-| **Genjutsu** | [AThevon/genjutsu](https://github.com/AThevon/genjutsu) | плагин `genjutsu@genjutsu` | `/genjutsu:cast`, `/genjutsu:paint`, `/genjutsu:bunshin` |
+| **Genjutsu** | [AThevon/genjutsu](https://github.com/AThevon/genjutsu) | плагин `genjutsu@genjutsu` | автоматически или `/genjutsu:cast`, `/genjutsu:paint`, `/genjutsu:bunshin` |
 
 ## Установка
 
@@ -21,6 +21,8 @@ curl -fsSL https://raw.githubusercontent.com/justbopit/CLAUDE-CLOUD/claude/eloqu
 После установки перезапустите Claude Code или откройте новую сессию. Чтобы проверить, наберите `/` в Claude Code: в списке появятся `/design-dna`, `/motion-design`, `/genjutsu:cast` и остальные. Плагины также видны в выводе `claude plugin list`.
 
 Повторный запуск безопасен: папки скиллов перезаписываются, уже установленные плагины остаются как есть.
+
+Если на macOS нет git, выполните `xcode-select --install` и повторите команду.
 
 ### Если хотите сначала прочитать скрипт
 
@@ -45,7 +47,7 @@ bash CLAUDE-CLOUD/animation-skills/install.sh
 
 ## Версии и безопасность
 
-Three.js, Design DNA и Motion Design скрипт ставит с конкретных коммитов. Код этих коммитов проверен 19.10.2026: хуков, MCP-серверов и скрытых инструкций в нём нет.
+Three.js, Design DNA и Motion Design скрипт ставит из зафиксированных коммитов. Код этих коммитов проверен 19.10.2026: хуков, MCP-серверов и скрытых инструкций в нём нет.
 
 | Репозиторий | Коммит |
 |---|---|
@@ -53,11 +55,17 @@ Three.js, Design DNA и Motion Design скрипт ставит с конкре�
 | zanwei/design-dna | `593e39b` |
 | LottieFiles/motion-design-skill | `f9a8a04` |
 
-Чтобы взять самые свежие версии, запустите `bash install.sh --latest`. Свежие версии никто не проверял. Плагины GSAP и Genjutsu всегда ставятся с последней версии; на момент проверки это были `aed9cfd` и `1f518a7` (v4.1.1).
+Чтобы взять самые свежие версии, добавьте флаг `--latest`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/justbopit/CLAUDE-CLOUD/claude/eloquent-brahmagupta-f2nq6v/animation-skills/install.sh | bash -s -- --latest
+```
+
+Свежие версии никто не проверял. Плагины GSAP и Genjutsu всегда ставятся в последней версии; на момент проверки это были `aed9cfd` и `1f518a7` (v4.1.1).
 
 Что стоит знать:
 
-- **Genjutsu**: `cast` и `paint` разрешают себе Bash и правку файлов без подтверждения, пока скилл активен. `/genjutsu:bunshin` собирает целый сайт параллельными агентами и стоит очень дорого: по замерам автора, около 10 млн токенов и 6–8 часов. Перед запуском он предупреждает о стоимости и дважды спрашивает подтверждение.
+- **Genjutsu**: все три скилла (`cast`, `paint`, `bunshin`) разрешают себе запускать команды в Bash и править файлы без подтверждения, пока скилл активен. Claude может включить их сам, без слэш-команды. `bunshin` вдобавок запускает субагентов и ходит в интернет. Он собирает целый сайт параллельными агентами и стоит очень дорого: по оценке автора, от ~6 до ~13 млн токенов в зависимости от выбранного уровня. Перед запуском он называет стоимость и просит выбрать уровень.
 - **Design DNA**: при анализе картинок может попросить `npm install` пакета `sharp`, чтобы точно измерять цвета. Claude Code спросит разрешение. Без Node.js цвета оцениваются на глаз.
 - **Three.js**: в скилле `threejs-asset-pipeline` есть примеры с `npx @gltf-transform/cli`. Claude Code спросит разрешение, прежде чем их запускать.
 - **GSAP**: если библиотеку анимации вы не указали, скилл советует GSAP.
@@ -67,9 +75,10 @@ Three.js, Design DNA и Motion Design скрипт ставит с конкре�
 
 ```bash
 # обновить плагины
-claude plugin marketplace update gsap-skills && claude plugin update gsap-skills@gsap-skills
 claude plugin marketplace update genjutsu && claude plugin update genjutsu@genjutsu
-# скиллы-папки: просто запустите install.sh ещё раз (с --latest для свежих версий)
+# у GSAP версия в манифесте не меняется (всегда 1.0.0), поэтому `plugin update` его не обновит: переустановите
+claude plugin marketplace update gsap-skills && claude plugin uninstall gsap-skills@gsap-skills && claude plugin install gsap-skills@gsap-skills
+# Three.js, Design DNA и Motion Design: повторите команду установки (с `bash -s -- --latest` для свежих версий)
 
 # удалить
 claude plugin uninstall gsap-skills@gsap-skills && claude plugin marketplace remove gsap-skills

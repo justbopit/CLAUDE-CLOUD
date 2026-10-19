@@ -47,7 +47,14 @@ main() {
     esac
   done
 
-  command -v git >/dev/null 2>&1 || { echo "git is required: https://git-scm.com/downloads" >&2; exit 1; }
+  # `git --version`, not `command -v git`: on macOS /usr/bin/git exists even without the developer tools.
+  if ! git --version >/dev/null 2>&1; then
+    echo "git is required: https://git-scm.com/downloads" >&2
+    [ "$(uname)" = Darwin ] && echo "On macOS run 'xcode-select --install', then run this command again." >&2
+    exit 1
+  fi
+  # A repo that vanished upstream should fail with an error, not ask for GitHub credentials.
+  export GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never
 
   SKILLS_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
   mkdir -p "$SKILLS_DIR"
